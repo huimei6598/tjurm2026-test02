@@ -30,6 +30,39 @@ std::unordered_map<int, cv::Rect> roi_color(const cv::Mat& input) {
      */
     std::unordered_map<int, cv::Rect> res;
     // IMPLEMENT YOUR CODE HERE
+    cv::Mat gray,binary;
+    cv::cvtColor(input,gray,cv::COLOR_BGR2GRAY);
+    cv::threshold(gray,binary,0,255,cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i>hierarchy;
+    cv::findContours(binary,contours,hierarchy,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
 
+    std::vector<std::vector<cv::Point>> filtered_contours;
+    for(const auto& contour : contours){
+        double area = cv::contourArea(contour);
+        if(area>1000.0){
+            filtered_contours.push_back(contour);
+        }
+    }
+
+    for(const auto& contour:filtered_contours){
+        cv::Rect rect = cv::boundingRect(contour);
+        cv::Mat roi = input(rect);
+        cv::Scalar mean_color = cv::mean(roi);
+        double blue = mean_color[0];
+        double green = mean_color[1];
+        double red = mean_color[2];
+        int color_type = -1;
+        if(blue > green && blue > red && blue > 100){
+            color_type = 0;
+        }else if(green > blue && green > red && green > 100){
+            color_type = 1;
+        }else if(red > blue && red > green && red > 100){
+            color_type = 2;
+        }
+        if(color_type != -1){
+            res[color_type] = rect;
+        }
+    }
     return res;
 }

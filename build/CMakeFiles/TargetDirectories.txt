@@ -1,0 +1,3 @@
+/home/huimei/tjurm2026-test02/build/CMakeFiles/tjurm_tutorial.dir
+/home/huimei/tjurm2026-test02/build/CMakeFiles/edit_cache.dir
+/home/huimei/tjurm2026-test02/build/CMakeFiles/rebuild_cache.dir

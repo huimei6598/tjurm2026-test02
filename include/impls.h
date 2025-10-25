@@ -3,6 +3,8 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include <unordered_map>
+#include <iostream>
 
 // 练习 (1)
 std::vector<cv::Mat> split(const cv::Mat& rgb_image);
